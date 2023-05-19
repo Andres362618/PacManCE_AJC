@@ -1,6 +1,8 @@
 #include <iostream>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
 
 #include "pacman.h"
 #include "fantasmas.h"
@@ -66,14 +68,19 @@ char mapa_2[MAXFILAS][MAXCOLUMNAS] =
 int main() 
 {
     int vidas = 3;
+    int puntuacion = 0;
 
-    int wigth = 1000;
+    int wigth = 1010;
     int height = 600;
 
     ALLEGRO_DISPLAY *display = NULL;
 
+    ALLEGRO_FONT* minecraft = NULL;
+
     al_init();
     al_init_image_addon();
+    al_init_font_addon();
+    al_init_ttf_addon();
     al_install_keyboard();
 
     display = al_create_display(wigth, height);
@@ -88,6 +95,8 @@ int main()
     ALLEGRO_BITMAP *muro = al_load_bitmap("imagenes/muro.png");
     ALLEGRO_BITMAP *puntos = al_load_bitmap("imagenes/comida.png");
     ALLEGRO_BITMAP *vida = vida_3;
+
+    minecraft = al_load_font("fuentes/Minecraft.ttf", 30, 0);
 
     al_register_event_source(queue, al_get_keyboard_event_source());
     al_register_event_source(queue, al_get_timer_event_source(FPS));
@@ -128,6 +137,11 @@ int main()
             pacman->animation();
         }
 
+        if (mapa_1[pacman->y/30][pacman->x/30] == 'o')
+        {
+            puntuacion += 10;
+        }
+        
         if ((pacman->x)/30 == (fantasma->x)/30 && 
             (pacman->y)/30 == (fantasma->y)/30)
         {
@@ -188,12 +202,16 @@ int main()
 
         dibujar_mapa_1(pacman->x, pacman->y);
 
+        al_draw_text(minecraft, al_map_rgb(255, 255, 255), 30*30 + 10, 1*30, NULL, "Nivel 1");
+
         al_draw_bitmap(muro, 30*30, 0, 0);
 
         al_draw_bitmap(corazon, 30*30 + 10, 3*30, 0);
         al_draw_bitmap(vida, 31*30 + 20, 3*30, 0);
 
         al_draw_bitmap(puntos, 30*30 + 10, 5*30, 0);
+        al_draw_text(minecraft, al_map_rgb(255, 255, 255), 31*30 + 10, 5*30, NULL, to_string(puntuacion).c_str());
+
         
         fantasma->draw();
 
@@ -396,5 +414,5 @@ bool game_over ()
     return false;
 }
 
-// g++ main.cpp -o PacManCE -lallegro -lallegro_image
+// g++ main.cpp -o PacManCE -lallegro -lallegro_image -lallegro_font -lallegro_ttf
 // ./PacManCE

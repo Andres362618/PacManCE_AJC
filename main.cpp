@@ -82,8 +82,12 @@ int main()
     ALLEGRO_TIMER *FPS = al_create_timer(1.0 / 60);
 
     ALLEGRO_BITMAP *corazon = al_load_bitmap("imagenes/corazon.png");
+    ALLEGRO_BITMAP *vida_1 = al_load_bitmap("imagenes/1.png");
+    ALLEGRO_BITMAP *vida_2 = al_load_bitmap("imagenes/2.png");
+    ALLEGRO_BITMAP *vida_3 = al_load_bitmap("imagenes/3.png");
     ALLEGRO_BITMAP *muro = al_load_bitmap("imagenes/muro.png");
     ALLEGRO_BITMAP *puntos = al_load_bitmap("imagenes/comida.png");
+    ALLEGRO_BITMAP *vida = vida_3;
 
     al_register_event_source(queue, al_get_keyboard_event_source());
     al_register_event_source(queue, al_get_timer_event_source(FPS));
@@ -137,8 +141,29 @@ int main()
             fantasma->y = 2*30;
         }
 
+        if (vidas == 2)
+        {
+            vida = vida_2;
+        }
+        
+        if (vidas == 1)
+        {
+            vida = vida_1;
+        }
+        
         if (vidas == 0)
             {
+                fantasma->~Fantasma();
+                pacman->~PacMan();
+                al_destroy_bitmap(vida);
+                al_destroy_bitmap(vida_1);
+                al_destroy_bitmap(vida_2);
+                al_destroy_bitmap(vida_3);
+                al_destroy_bitmap(muro);
+                al_destroy_bitmap(corazon);
+                al_destroy_bitmap(puntos);
+                al_destroy_event_queue(queue);
+                al_destroy_display(display);
                 play = false;
             }
 
@@ -146,8 +171,15 @@ int main()
         {
             fantasma->~Fantasma();
             pacman->~PacMan();
-            al_destroy_display(display);
+            al_destroy_bitmap(vida);
+            al_destroy_bitmap(vida_1);
+            al_destroy_bitmap(vida_2);
+            al_destroy_bitmap(vida_3);
+            al_destroy_bitmap(muro);
+            al_destroy_bitmap(corazon);
+            al_destroy_bitmap(puntos);
             al_destroy_event_queue(queue);
+            al_destroy_display(display);
 
             nivel_2 ();
         }
@@ -159,6 +191,7 @@ int main()
         al_draw_bitmap(muro, 30*30, 0, 0);
 
         al_draw_bitmap(corazon, 30*30 + 10, 3*30, 0);
+        al_draw_bitmap(vida, 31*30 + 20, 3*30, 0);
 
         al_draw_bitmap(puntos, 30*30 + 10, 5*30, 0);
         
@@ -171,6 +204,13 @@ int main()
 
     fantasma->~Fantasma();
     pacman->~PacMan();
+    al_destroy_bitmap(vida);
+    al_destroy_bitmap(vida_1);
+    al_destroy_bitmap(vida_2);
+    al_destroy_bitmap(vida_3);
+    al_destroy_bitmap(muro);
+    al_destroy_bitmap(corazon);
+    al_destroy_bitmap(puntos);
     al_destroy_event_queue(queue);
     al_destroy_display(display);
 

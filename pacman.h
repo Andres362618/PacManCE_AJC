@@ -7,26 +7,50 @@
 
 char mapa_1P[MAXFILAS][MAXCOLUMNAS] = 
 {
-    "XXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-    "X           XXXXX           X",
-    "X XXX XXXXX XXXXX XXXXX XXX X",
-    "X XXX XXXXX XXXXX XXXXX XXX X",
-    "X                           X",
-    "X XXX XX XXXXXXXXXXX XX XXX X",
-    "X     XX     XXX     XX     X",
-    "X XXX XXXXXX XXX XXXXXX XXX X",
-    "X XXX XX             XX XXX X",
-    "      XX XXXXXXXXXXX XX      ",
-    "X XXX XX XXXXXXXXXXX XX XXX X",
-    "X XXX XX             XX XXX X",
-    "X XXX XXXXXX XXX XXXXXX XXX X",
-    "X     XX     XXX     XX     X",
-    "X XXX XX XXXXXXXXXXX XX XXX X",
-    "X XXX                   XXX X",
-    "X XXX XXXX XXXXXXXX XXX XXX X",
-    "X XXX XXXX          XXX XXX X",
-    "X          XXXXXXXX         X",
-    "XXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+    "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+    "X           XXXXXX           X",
+    "X XXX XXXXX XXXXXX XXXXX XXX X",
+    "X XXX XXXXX XXXXXX XXXXX XXX X",
+    "X                            X",
+    "X XXX XX XXXXXXXXXXXX XX XXX X",
+    "X     XX     XXXX     XX     X",
+    "X XXX XXXXXX XXXX XXXXXX XXX X",
+    "X XXX XX              XX XXX X",
+    "      XX XXXXXXXXXXXX XX      ",
+    "X XXX XX XXXXXXXXXXXX XX XXX X",
+    "X XXX XX              XX XXX X",
+    "X XXX XXXXXX XXXX XXXXXX XXX X",
+    "X     XX     XXXX     XX     X",
+    "X XXX XX XXXXXXXXXXXX XX XXX X",
+    "X XXX                    XXX X",
+    "X XXX XXXX XXXXXXXXX XXX XXX X",
+    "X XXX XXXX           XXX XXX X",
+    "X          XXXXXXXXX         X",
+    "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+};
+
+char mapa_2P[MAXFILAS][MAXCOLUMNAS] = 
+{
+    "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+    "X                            X",
+    "X                            X",
+    "X                            X",
+    "X                            X",
+    "X                            X",
+    "X                            X",
+    "X                            X",
+    "X                            X",
+    "X                            X",
+    "X                            X",
+    "X                            X",
+    "X                            X",
+    "X                            X",
+    "X                            X",
+    "X                            X",
+    "X                            X",
+    "X                            X",
+    "X                            X",
+    "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
 };
 
 class PacMan
@@ -54,7 +78,8 @@ public:
     void mov_up();
     void mov_down();
     void animation();
-    void Draw();
+    void Draw_1();
+    void Draw_2();
 };
 
 PacMan::PacMan()
@@ -66,9 +91,9 @@ PacMan::PacMan()
 
     pacman = pacman_right;
 
-    x = 420;
+    x = 450;
     dir = 4;
-    y = 330;
+    y = 510;
 
     maxFrame = 2;
     curFrame = 0;
@@ -113,7 +138,7 @@ void PacMan::animation()
     }
 }
 
-void PacMan::Draw()
+void PacMan::Draw_1()
 {
     if (dir == 0)
     {
@@ -145,6 +170,59 @@ void PacMan::Draw()
     if (dir == 3)
     {
         if (mapa_1P[(y+30)/30][(x)/30] != 'X')
+        {
+            y += 5;
+        }
+        else dir = 4;
+    }
+
+    if (x >= 870)
+    {
+        x = -30;
+    }
+
+    else if (x <= -30)
+    {
+        x = 870;
+    }
+    
+    
+    
+    al_draw_bitmap_region(pacman, curFrame * frameWidht, 0, frameWidht, frameHeight, x, y, 0);
+}
+
+void PacMan::Draw_2()
+{
+    if (dir == 0)
+    {
+        if (mapa_2P[(y)/30][(x-1)/30] != 'X')
+        {
+            x -= 5;
+        }
+        else dir = 4;
+    }
+    
+    if (dir == 1)
+    {
+        if (mapa_2P[(y)/30][(x+30)/30] != 'X')
+        {
+            x += 5;
+        }
+        else dir = 4;
+    }
+
+    if (dir == 2) 
+    {
+        if (mapa_2P[(y-1)/30][(x)/30] != 'X')
+        {
+            y -= 5;
+        }
+        else dir = 4;
+    }
+    
+    if (dir == 3)
+    {
+        if (mapa_2P[(y+30)/30][(x)/30] != 'X')
         {
             y += 5;
         }
